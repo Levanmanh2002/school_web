@@ -201,10 +201,38 @@ class _AddTeacherViewState extends State<AddTeacherView> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text(
-          'Thêm giáo viên mới',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
+        titleSpacing: 0.0,
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            IconButton(onPressed: () => Get.back(), icon: const Icon(Icons.arrow_back, size: 16)),
+            const Text(
+              'Thêm giáo viên mới',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
+            ),
+          ],
         ),
+        actions: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: Obx(
+              () => ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    addTeacher();
+                  }
+                },
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.pink),
+                child: isLoading.value
+                    ? const Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator()))
+                    : const Text(
+                        "Thêm",
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                      ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -225,7 +253,6 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: fullNameController,
-                    isEditing: true.obs,
                     title: 'Họ và Tên',
                     initialData: '',
                     keyboardType: TextInputType.name,
@@ -234,14 +261,13 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: teacherCodeController,
-                    isEditing: true.obs,
                     title: 'Mã giáo viên',
                     initialData: '',
                     validator: true,
                   ),
+                  const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: passwordController,
-                    isEditing: true.obs,
                     title: 'Mật khẩu',
                     initialData: '',
                     validator: true,
@@ -249,7 +275,6 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: cccdController,
-                    isEditing: true.obs,
                     title: 'CMND/CCCD',
                     initialData: '',
                     validator: true,
@@ -257,7 +282,6 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: emailController,
-                    isEditing: true.obs,
                     title: 'Email',
                     initialData: '',
                     keyboardType: TextInputType.emailAddress,
@@ -266,7 +290,6 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: phoneNumberController,
-                    isEditing: true.obs,
                     title: 'Số điện thoại',
                     initialData: '',
                     keyboardType: TextInputType.phone,
@@ -274,6 +297,15 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                   ),
                   const SizedBox(height: 12),
                   Container(
+                    alignment: Alignment.topLeft,
+                    child: const Text(
+                      'Giới tính',
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF373A43)),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: const Color(0xFF9AA0AC)),
@@ -282,8 +314,8 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                       decoration: const InputDecoration(
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
+                        contentPadding: EdgeInsets.only(bottom: 9),
                       ),
-                      // value: "genderController.text",
                       value: "Khác",
                       elevation: 0,
                       icon: const Icon(Icons.keyboard_arrow_down_outlined),
@@ -300,41 +332,59 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                     ),
                   ),
                   const SizedBox(height: 12),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: const Text(
+                      'Ngày tháng năm sinh',
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF373A43)),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                   InkWell(
                     onTap: () async {
                       await _selectDate(context, 'birth');
                     },
                     child: ValueListenableBuilder(
-                        valueListenable: selectedBirthDateNotifier,
-                        builder: (context, date, child) {
-                          return CustomTextWidgets(
-                            isEditing: RxBool(false),
-                            title: 'Ngày sinh',
-                            initialData: selectedBirthDate != null
+                      valueListenable: selectedBirthDateNotifier,
+                      builder: (context, date, child) {
+                        return Container(
+                          width: double.maxFinite,
+                          height: 40,
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.only(left: 16),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: const Color(0xFFD2D5DA)),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            selectedBirthDate != null
                                 ? '${selectedBirthDate!.day}/${selectedBirthDate!.month}/${selectedBirthDate!.year}'
-                                : '',
-                            keyboardType: TextInputType.datetime,
-                          );
-                        }),
+                                : 'N/A',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF373A43),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: birthPlaceController,
-                    isEditing: true.obs,
                     title: 'Nơi sinh',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: ethnicityController,
-                    isEditing: true.obs,
                     title: 'Dân tộc',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: nicknameController,
-                    isEditing: true.obs,
                     title: 'Biệt danh',
                     initialData: '',
                   ),
@@ -349,58 +399,83 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: teachingLevelController,
-                    isEditing: true.obs,
                     title: 'Trình độ giảng dạy',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: positionController,
-                    isEditing: true.obs,
                     title: 'Chức vụ',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: experienceController,
-                    isEditing: true.obs,
                     title: 'Kinh nghiệm',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: departmentController,
-                    isEditing: true.obs,
                     title: 'Bộ môn',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: roleController,
-                    isEditing: true.obs,
                     title: 'Vai trò',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: const Text(
+                      'Ngày tham gia',
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF373A43)),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                   InkWell(
                     onTap: () async {
                       await _selectDate(context, 'join');
                     },
                     child: ValueListenableBuilder(
-                        valueListenable: selectedJoinDateNotifier,
-                        builder: (context, date, child) {
-                          return CustomTextWidgets(
-                            isEditing: RxBool(false),
-                            title: 'Ngày tham gia',
-                            initialData: selectedJoinDate != null
+                      valueListenable: selectedJoinDateNotifier,
+                      builder: (context, date, child) {
+                        return Container(
+                          width: double.maxFinite,
+                          height: 40,
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.only(left: 16),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: const Color(0xFFD2D5DA)),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            selectedJoinDate != null
                                 ? '${selectedJoinDate!.day}/${selectedJoinDate!.month}/${selectedJoinDate!.year}'
-                                : '',
-                            keyboardType: TextInputType.datetime,
-                          );
-                        }),
+                                : 'N/A',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF373A43),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Container(
+                    alignment: Alignment.topLeft,
+                    child: const Text(
+                      'Là cán bộ công chức',
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF373A43)),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: const Color(0xFF9AA0AC)),
@@ -409,8 +484,8 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                       decoration: const InputDecoration(
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
+                        contentPadding: EdgeInsets.only(bottom: 9),
                       ),
-                      // value: isCivilServant,
                       value: false,
                       elevation: 0,
                       icon: const Icon(Icons.keyboard_arrow_down_outlined),
@@ -433,26 +508,32 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: contractTypeController,
-                    isEditing: true.obs,
                     title: 'Loại hợp đồng',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: primarySubjectController,
-                    isEditing: true.obs,
                     title: 'Môn dạy chính',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: secondarySubjectController,
-                    isEditing: true.obs,
                     title: 'Môn dạy phụ',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   Container(
+                    alignment: Alignment.topLeft,
+                    child: const Text(
+                      'Tình trạng đang làm việc',
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF373A43)),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: const Color(0xFF9AA0AC)),
@@ -461,8 +542,8 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                       decoration: const InputDecoration(
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
+                        contentPadding: EdgeInsets.only(bottom: 9),
                       ),
-                      // value: isSeletedIsWorking,
                       value: true,
                       elevation: 0,
                       icon: const Icon(Icons.keyboard_arrow_down_outlined),
@@ -493,46 +574,43 @@ class _AddTeacherViewState extends State<AddTeacherView> {
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: academicDegreeController,
-                    isEditing: true.obs,
                     title: 'Trình độ học vấn',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: standardDegreeController,
-                    isEditing: true.obs,
                     title: 'Trình độ chuẩn',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: politicalTheoryController,
-                    isEditing: true.obs,
                     title: 'Chính trị',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
-                  Obx(
-                    () => Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(8),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            addTeacher();
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.pink),
-                        child: isLoading.value
-                            ? const Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator()))
-                            : const Text(
-                                "Thêm giáo viên",
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
+                  // Obx(
+                  //   () => Container(
+                  //     width: double.infinity,
+                  //     padding: const EdgeInsets.all(8),
+                  //     child: ElevatedButton(
+                  //       onPressed: () {
+                  //         if (_formKey.currentState!.validate()) {
+                  //           addTeacher();
+                  //         }
+                  //       },
+                  //       style: ElevatedButton.styleFrom(backgroundColor: Colors.pink),
+                  //       child: isLoading.value
+                  //           ? const Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator()))
+                  //           : const Text(
+                  //               "Thêm giáo viên",
+                  //               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  //             ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 12),
                 ],
               ),
             ),

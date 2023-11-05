@@ -6,10 +6,10 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 import 'package:school_manager_project/app/models/classes.dart';
 import 'package:school_manager_project/app/models/majors_models.dart';
 import 'package:school_manager_project/app/models/teacher.dart';
-import 'package:http/http.dart' as http;
 
 class CreateView extends StatefulWidget {
   const CreateView({super.key});
@@ -467,9 +467,6 @@ class _CreateViewState extends State<CreateView> {
                     ),
                   ),
                 ),
-                // Text(
-                //   'Start Time: $selectedStartTimeDate',
-                // ),
                 const SizedBox(height: 32),
                 Container(
                   padding: const EdgeInsets.only(left: 16),
@@ -498,12 +495,6 @@ class _CreateViewState extends State<CreateView> {
                     ),
                   ),
                 ),
-                // Text(
-                //   'Duration: $selectedDurationDate',
-                // ),
-                // Text(
-                //   'Milliseconds Since Epoch Duration: $selectedDateMilliseconds',
-                // ),
                 const SizedBox(height: 16),
                 Padding(
                   padding: const EdgeInsets.all(16),
@@ -542,7 +533,6 @@ class _CreateViewState extends State<CreateView> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 16),
               ],
             ),

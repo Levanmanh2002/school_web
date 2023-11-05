@@ -209,10 +209,38 @@ class _AddStudentViewState extends State<AddStudentView> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text(
-          'Thêm học sinh mới',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
+        titleSpacing: 0.0,
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            IconButton(onPressed: () => Get.back(), icon: const Icon(Icons.arrow_back, size: 16)),
+            const Text(
+              'Thêm học sinh mới',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
+            ),
+          ],
         ),
+        actions: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: Obx(
+              () => ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    addStudent();
+                  }
+                },
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.pink),
+                child: isLoading.value
+                    ? const Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator()))
+                    : const Text(
+                        "Thêm",
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -233,39 +261,39 @@ class _AddStudentViewState extends State<AddStudentView> {
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: fullNameController,
-                    isEditing: true.obs,
                     title: 'Họ và Tên',
-                    initialData: '',
                     keyboardType: TextInputType.name,
                     validator: true,
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: customYearController,
-                    isEditing: true.obs,
                     title: 'Năm vào học',
-                    initialData: '',
                     keyboardType: TextInputType.name,
                     validator: true,
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: gmailController,
-                    isEditing: true.obs,
                     title: 'Email',
-                    initialData: '',
                     keyboardType: TextInputType.emailAddress,
                     validator: true,
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: cccdController,
-                    isEditing: true.obs,
                     title: 'CMND/CCCD',
-                    initialData: '',
                     validator: true,
                   ),
                   const SizedBox(height: 12),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: const Text(
+                      'Ngày cấp CCCD/CMND',
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF373A43)),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                   InkWell(
                     onTap: () async {
                       await _selectDate(context, 'data_cccd');
@@ -273,20 +301,31 @@ class _AddStudentViewState extends State<AddStudentView> {
                     child: ValueListenableBuilder(
                         valueListenable: selectedDateCccdNotifier,
                         builder: (context, date, child) {
-                          return CustomTextWidgets(
-                            isEditing: RxBool(false),
-                            title: 'Ngày cấp CCCD/CMND',
-                            initialData: selectedDateCccd != null
-                                ? '${selectedDateCccd!.day}/${selectedDateCccd!.month}/${selectedDateCccd!.year}'
-                                : '',
-                            keyboardType: TextInputType.datetime,
+                          return Container(
+                            width: double.maxFinite,
+                            height: 40,
+                            alignment: Alignment.centerLeft,
+                            padding: const EdgeInsets.only(left: 16),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: const Color(0xFFD2D5DA)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              selectedDateCccd != null
+                                  ? '${selectedDateCccd!.day}/${selectedDateCccd!.month}/${selectedDateCccd!.year}'
+                                  : 'N/A',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF373A43),
+                              ),
+                            ),
                           );
                         }),
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: idCardIssuedPlaceController,
-                    isEditing: true.obs,
                     title: 'Nơi cấp CCCD/CMND',
                     initialData: '',
                     validator: true,
@@ -294,16 +333,22 @@ class _AddStudentViewState extends State<AddStudentView> {
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: phoneController,
-                    isEditing: true.obs,
                     title: 'Số điện thoại',
                     initialData: '',
                     keyboardType: TextInputType.phone,
                     validator: true,
                   ),
                   const SizedBox(height: 12),
-                  Container(alignment: Alignment.topLeft, child: const Text('Giới tính')),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: const Text(
+                      'Giới tính',
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF373A43)),
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   Container(
+                    height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: const Color(0xFF9AA0AC)),
@@ -312,8 +357,8 @@ class _AddStudentViewState extends State<AddStudentView> {
                       decoration: const InputDecoration(
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
+                        contentPadding: EdgeInsets.only(bottom: 9),
                       ),
-                      // value: "genderController.text",
                       value: "Khác",
                       elevation: 0,
                       icon: const Icon(Icons.keyboard_arrow_down_outlined),
@@ -330,6 +375,14 @@ class _AddStudentViewState extends State<AddStudentView> {
                     ),
                   ),
                   const SizedBox(height: 12),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: const Text(
+                      'Ngày tháng năm sinh',
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF373A43)),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                   InkWell(
                     onTap: () async {
                       await _selectDate(context, 'birth');
@@ -337,55 +390,61 @@ class _AddStudentViewState extends State<AddStudentView> {
                     child: ValueListenableBuilder(
                         valueListenable: selectedBirthDateNotifier,
                         builder: (context, date, child) {
-                          return CustomTextWidgets(
-                            isEditing: RxBool(false),
-                            title: 'Ngày sinh',
-                            initialData: selectedBirthDate != null
-                                ? '${selectedBirthDate!.day}/${selectedBirthDate!.month}/${selectedBirthDate!.year}'
-                                : '',
-                            keyboardType: TextInputType.datetime,
+                          return Container(
+                            width: double.maxFinite,
+                            height: 40,
+                            alignment: Alignment.centerLeft,
+                            padding: const EdgeInsets.only(left: 16),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: const Color(0xFFD2D5DA)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              selectedBirthDate != null
+                                  ? '${selectedBirthDate!.day}/${selectedBirthDate!.month}/${selectedBirthDate!.year}'
+                                  : 'N/A',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF373A43),
+                              ),
+                            ),
                           );
                         }),
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: birthPlaceController,
-                    isEditing: true.obs,
                     title: 'Nơi sinh',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: ethnicityController,
-                    isEditing: true.obs,
                     title: 'Dân tộc',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: religionController,
-                    isEditing: true.obs,
                     title: 'Tôn giáo',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: hometownController,
-                    isEditing: true.obs,
                     title: 'Quê quán',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: permanentAddressController,
-                    isEditing: true.obs,
                     title: 'Địa chỉ thường trú',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: notesController,
-                    isEditing: true.obs,
                     title: 'Ghi chú',
                     initialData: '',
                   ),
@@ -400,56 +459,48 @@ class _AddStudentViewState extends State<AddStudentView> {
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: educationLevelController,
-                    isEditing: true.obs,
                     title: 'Trình độ học vấn',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: academicPerformanceController,
-                    isEditing: true.obs,
                     title: 'Học lực',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: conductController,
-                    isEditing: true.obs,
                     title: 'Hạnh kiểm',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: classRanking10Controller,
-                    isEditing: true.obs,
                     title: 'Học lực lớp 10',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: classRanking11Controller,
-                    isEditing: true.obs,
                     title: 'Học lực lớp 11',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: classRanking12Controller,
-                    isEditing: true.obs,
                     title: 'Học lực lớp 12',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: graduationYearController,
-                    isEditing: true.obs,
                     title: 'Năm học tốt nghiệp',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: occupationController,
-                    isEditing: true.obs,
                     title: 'Nghề nghiệp học sinh',
                     initialData: '',
                   ),
@@ -464,67 +515,40 @@ class _AddStudentViewState extends State<AddStudentView> {
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: contactPhoneController,
-                    isEditing: true.obs,
                     title: 'Số điện thoại liên lạc',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: contactAddressController,
-                    isEditing: true.obs,
                     title: 'Địa chỉ liên lạc',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: fatherFullNameController,
-                    isEditing: true.obs,
                     title: 'Họ tên Cha',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: motherFullNameController,
-                    isEditing: true.obs,
                     title: 'Họ tên Mẹ',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: beneficiaryController,
-                    isEditing: true.obs,
                     title: 'Đối tượng học sinh ở đâu',
                     initialData: '',
                   ),
                   const SizedBox(height: 12),
                   CustomTextWidgets(
                     controller: areaController,
-                    isEditing: true.obs,
                     title: 'Khu vực',
                     initialData: '',
                   ),
-                  const SizedBox(height: 12),
-                  Obx(
-                    () => Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(8),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            addStudent();
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.pink),
-                        child: isLoading.value
-                            ? const Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator()))
-                            : const Text(
-                                "Thêm học sinh mới",
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),

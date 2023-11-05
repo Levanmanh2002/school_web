@@ -44,6 +44,7 @@ dependencies:
   fluttertoast: ^8.2.2
   image_picker: ^1.0.4
   gallery_saver: ^2.3.2
+  dropdown_button2: ^2.3.9
 
 dev_dependencies:
   flutter_test:

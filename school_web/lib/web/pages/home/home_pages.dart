@@ -289,6 +289,15 @@ class _HomePagesState extends State<HomePages> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
+                                      customCardWidgets(context, 'Tạo thời khóa biểu', () {
+                                        Get.toNamed(Routes.TIMETABLE);
+                                      }),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
                                       customCardWidgets(context, 'Kiểm tra lớp học chưa có giáo viên', () {}),
                                       customCardWidgets(context, 'Thêm giáo viên vào lớp học', () {}),
                                     ],

@@ -28,3 +28,22 @@ class ClassInfoData {
     return data;
   }
 }
+
+class Classes {
+  String? className;
+  String? id;
+
+  Classes({this.className, this.id});
+
+  Classes.fromJson(Map<String, dynamic> json) {
+    className = json['className'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['className'] = className;
+    data['id'] = id;
+    return data;
+  }
+}

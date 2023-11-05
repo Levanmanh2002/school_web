@@ -4,7 +4,7 @@
             "outputFile": "com.example.school_manager_project.app-mergeDebugResources-23:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "E:\\project\\school\\school_manager_project\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "E:\\project\\school_web\\school_manager_project\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

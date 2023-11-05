@@ -20,4 +20,8 @@ abstract class Routes {
   static const HOMESTUDENT = '/home_student';
   static const PROFILESTUDENT = '/profile_student';
   static const SETTINGSSTUDENT = '/setting_profile';
+
+  // Timetable
+  static const TIMETABLE = '/timetable';
+  static const CREATE = '/create';
 }

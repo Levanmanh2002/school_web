@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:school_manager_project/app/pages/authentication/authentication.dart';
 import 'package:school_manager_project/app/pages/home/home_pages.dart';
 import 'package:school_manager_project/app/pages/majors/majors_pages.dart';
+import 'package:school_manager_project/app/pages/profile/edit_profile_pages.dart';
 import 'package:school_manager_project/app/pages/profile/profile_pages.dart';
 import 'package:school_manager_project/app/pages/screen/classes/view/class_info_view.dart';
 import 'package:school_manager_project/app/pages/screen/classes/view/divide_classes_view.dart';
@@ -65,6 +66,10 @@ abstract class AppPages {
       name: Routes.DIVIDECLASS,
       page: () => const DivideClassesView(),
     ),
+    GetPage(
+      name: Routes.EDITPROFILR,
+      page: () => const EditProfilePages(),
+    ),
 
     // Students
     GetPage(
@@ -83,7 +88,7 @@ abstract class AppPages {
     // Timetable
     GetPage(
       name: Routes.TIMETABLE,
-      page: () => const TimetablePages(),
+      page: () => const TimetablePage(),
     ),
     GetPage(
       name: Routes.CREATE,

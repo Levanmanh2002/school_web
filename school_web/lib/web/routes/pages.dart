@@ -13,6 +13,8 @@ import 'package:school_web/web/pages/setting/setting_pages.dart';
 import 'package:school_web/web/pages/students/students_pages.dart';
 import 'package:school_web/web/pages/students/view/profile_student_view.dart';
 import 'package:school_web/web/pages/students/view/settings_student_view.dart';
+import 'package:school_web/web/pages/timetable/timetable.dart';
+import 'package:school_web/web/pages/timetable/view/create_view.dart';
 
 part 'routes.dart';
 
@@ -76,6 +78,16 @@ abstract class AppPages {
     GetPage(
       name: Routes.SETTINGSSTUDENT,
       page: () => const SettingsStudentView(),
+    ),
+
+    // Timetable
+    GetPage(
+      name: Routes.TIMETABLE,
+      page: () => const TimetablePage(),
+    ),
+    GetPage(
+      name: Routes.CREATE,
+      page: () => const CreateView(),
     ),
   ];
 }

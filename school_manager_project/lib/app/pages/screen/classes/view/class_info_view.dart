@@ -128,7 +128,7 @@ class _ClassesInfoViewState extends State<ClassesInfoView> {
                                                 style: const TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w400,
-                                                  color: Colors.black,
+                                                  color: Color.fromARGB(255, 240, 206, 206),
                                                 ),
                                               ),
                                               TextSpan(

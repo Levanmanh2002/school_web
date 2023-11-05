@@ -15,6 +15,7 @@ abstract class Routes {
   static const GETMAJORS = '/get_majors';
   static const CLASSESINFO = '/classes';
   static const DIVIDECLASS = '/divide_class';
+  static const EDITPROFILR = '/edit_profile';
 
   // Students
   static const HOMESTUDENT = '/home_student';

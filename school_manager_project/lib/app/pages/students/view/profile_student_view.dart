@@ -187,7 +187,7 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
 
   @override
   Widget build(BuildContext context) {
-    RxBool isEditing = RxBool(false);
+    bool isEditing = false;
 
     final birthDateJson = studentController.studentData.value?.birthDate;
     final idCardIssuedDateJson = studentController.studentData.value?.idCardIssuedDate;
@@ -221,7 +221,7 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                 icon: const Icon(Icons.arrow_back, size: 20, color: Colors.black)),
             Obx(
               () => Text(
-                isEditing.value ? 'Edit Profile' : studentController.studentData.value?.fullName ?? '',
+                isEditing ? 'Edit Profile' : studentController.studentData.value?.fullName ?? '',
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
               ),
             ),
@@ -232,7 +232,7 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
             padding: const EdgeInsets.only(right: 16),
             child: Obx(() => IconButton(
                   onPressed: () async {
-                    if (isEditing.value) {
+                    if (isEditing) {
                       await studentController.getPutProfileStudent(
                         _gmailController.text,
                         _phoneController.text,
@@ -265,10 +265,10 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                         _notesController.text,
                       );
                     } else {
-                      isEditing.value = true;
+                      isEditing = true;
                     }
                   },
-                  icon: Icon(isEditing.value ? Icons.save : Icons.edit, size: 20, color: Colors.black),
+                  icon: Icon(isEditing ? Icons.save : Icons.edit, size: 20, color: Colors.black),
                 )),
           )
         ],
@@ -302,7 +302,7 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                         radius: 60,
                       ),
                     ),
-                    isEditing.value
+                    isEditing
                         ? Positioned(
                             bottom: 3,
                             right: 2,
@@ -351,13 +351,13 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                       isEditing == true
                           ? CustomTextWidgets(
                               controller: _fullNameController,
-                              isEditing: isEditing,
+                              
                               title: 'Họ và Tên',
                               initialData: studentController.studentData.value?.fullName,
                               keyboardType: TextInputType.name,
                             )
                           : CustomTextWidgets(
-                              isEditing: isEditing,
+                              
                               title: 'Mã sinh viên',
                               initialData: studentController.studentData.value?.mssv,
                               color: Colors.green,
@@ -366,7 +366,7 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                       isEditing == true
                           ? const SizedBox.shrink()
                           : CustomTextWidgets(
-                              isEditing: isEditing,
+                              
                               title: 'Học sinh lớp',
                               initialData: studentController.studentData.value?.classStudent,
                               color: Colors.green,
@@ -374,7 +374,7 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _gmailController,
-                        isEditing: isEditing,
+                        
                         title: 'Email',
                         initialData: studentController.studentData.value?.gmail,
                         keyboardType: TextInputType.emailAddress,
@@ -383,7 +383,7 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _phoneController,
-                        isEditing: isEditing,
+                        
                         title: 'Số điện thoại',
                         initialData: studentController.studentData.value?.phone,
                         keyboardType: TextInputType.phone,
@@ -392,7 +392,7 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _cccdController,
-                        isEditing: isEditing,
+                        
                         title: 'CMND/CCCD',
                         initialData: studentController.studentData.value?.cccd,
                         validator: true,
@@ -407,7 +407,7 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                                   valueListenable: selectedJoinDateNotifier,
                                   builder: (context, date, child) {
                                     return CustomTextWidgets(
-                                      isEditing: RxBool(false),
+                                      
                                       title: 'Ngày cấp cmnd/cccd',
                                       initialData: selectedJoinDate != null
                                           ? '${selectedJoinDate!.day}/${selectedJoinDate!.month}/${selectedJoinDate!.year}'
@@ -418,14 +418,14 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                             )
                           : CustomTextWidgets(
                               controller: _idCardIssuedDateController,
-                              isEditing: isEditing,
+                              
                               title: 'Ngày cấp cmnd/cccd',
                               initialData: formCardIssuedDate,
                             ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _idCardIssuedPlaceController,
-                        isEditing: isEditing,
+                        
                         title: 'Nơi cấp cmnd/cccd',
                         initialData: studentController.studentData.value?.idCardIssuedPlace,
                       ),
@@ -458,7 +458,7 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                             )
                           : CustomTextWidgets(
                               controller: _genderController,
-                              isEditing: isEditing,
+                              
                               title: 'Giới tính',
                               initialData: studentController.studentData.value?.gender,
                             ),
@@ -472,7 +472,7 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                                   valueListenable: selectedBirthDateNotifier,
                                   builder: (context, date, child) {
                                     return CustomTextWidgets(
-                                      isEditing: RxBool(false),
+                                      
                                       title: 'Ngày sinh',
                                       initialData: selectedBirthDate != null
                                           ? '${selectedBirthDate!.day}/${selectedBirthDate!.month}/${selectedBirthDate!.year}'
@@ -482,7 +482,7 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                                   }),
                             )
                           : CustomTextWidgets(
-                              isEditing: isEditing,
+                              
                               title: 'Ngày sinh',
                               // initialData: studentController.studentData.value?.birthDate,
                               keyboardType: TextInputType.datetime,
@@ -491,63 +491,63 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _birthPlaceController,
-                        isEditing: isEditing,
+                        
                         title: 'Nơi sinh',
                         initialData: studentController.studentData.value?.birthPlace,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _ethnicityController,
-                        isEditing: isEditing,
+                        
                         title: 'Dân tộc',
                         initialData: studentController.studentData.value?.ethnicity,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _religionController,
-                        isEditing: isEditing,
+                        
                         title: 'Tôn giáo',
                         initialData: studentController.studentData.value?.religion,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _hometownController,
-                        isEditing: isEditing,
+                        
                         title: 'Quê quán học sinh',
                         initialData: studentController.studentData.value?.hometown,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _permanentAddressController,
-                        isEditing: isEditing,
+                        
                         title: 'Địa chỉ thường trú học sinh',
                         initialData: studentController.studentData.value?.permanentAddress,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _contactAddressController,
-                        isEditing: isEditing,
+                        
                         title: 'Địa chỉ liên lạc',
                         initialData: studentController.studentData.value?.contactAddress,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _beneficiaryController,
-                        isEditing: isEditing,
+                        
                         title: 'Đối tượng học sinh (khu vực nào)',
                         initialData: studentController.studentData.value?.beneficiary,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _areaController,
-                        isEditing: isEditing,
+                        
                         title: 'Khu vực',
                         initialData: studentController.studentData.value?.area,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _occupationController,
-                        isEditing: isEditing,
+                        
                         title: 'Nghề nghiệp học sinh',
                         initialData: studentController.studentData.value?.occupation,
                       ),
@@ -562,56 +562,56 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _customYearController,
-                        isEditing: isEditing,
+                        
                         title: 'Năm vào học',
                         initialData: studentController.studentData.value?.customYear,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _educationLevelController,
-                        isEditing: isEditing,
+                        
                         title: 'Trình độ học vấn',
                         initialData: studentController.studentData.value?.educationLevel,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _academicPerformanceController,
-                        isEditing: isEditing,
+                        
                         title: 'Học lực học sinh',
                         initialData: studentController.studentData.value?.academicPerformance,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _conductController,
-                        isEditing: isEditing,
+                        
                         title: 'Hạnh kiểm học sinh',
                         initialData: studentController.studentData.value?.conduct,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _classRanking10Controller,
-                        isEditing: isEditing,
+                        
                         title: 'Học lực lớp 10',
                         initialData: studentController.studentData.value?.classRanking10,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _classRanking11Controller,
-                        isEditing: isEditing,
+                        
                         title: 'Học lực lớp 11',
                         initialData: studentController.studentData.value?.classRanking11,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _classRanking12Controller,
-                        isEditing: isEditing,
+                        
                         title: 'Học lực lớp 12',
                         initialData: studentController.studentData.value?.classRanking12,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _graduationYearController,
-                        isEditing: isEditing,
+                        
                         title: 'Năm tốt nghiệp',
                         initialData: studentController.studentData.value?.graduationYear,
                       ),
@@ -626,28 +626,28 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _contactPhoneController,
-                        isEditing: isEditing,
+                        
                         title: 'Số điện thoại liên lạc',
                         initialData: studentController.studentData.value?.contactPhone,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _fatherFullNameController,
-                        isEditing: isEditing,
+                        
                         title: 'Họ tên Cha',
                         initialData: studentController.studentData.value?.fatherFullName,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _motherFullNameController,
-                        isEditing: isEditing,
+                        
                         title: 'Họ tên Mẹ',
                         initialData: studentController.studentData.value?.motherFullName,
                       ),
                       const SizedBox(height: 12),
                       CustomTextWidgets(
                         controller: _notesController,
-                        isEditing: isEditing,
+                        
                         title: 'Ghi chú',
                         initialData: studentController.studentData.value?.notes,
                       ),
@@ -655,7 +655,7 @@ class _ProfileStudentViewState extends State<ProfileStudentView> {
                       isEditing == true
                           ? const SizedBox.shrink()
                           : CustomTextWidgets(
-                              isEditing: isEditing,
+                              
                               title: 'Tình trạng học sinh',
                               initialData: studentController.studentData.value?.isStudying == true
                                   ? 'Học sinh đang học'

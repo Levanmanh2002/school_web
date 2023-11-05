@@ -63,8 +63,7 @@ class _MajorsPagesState extends State<MajorsPages> {
 
   Future<void> onEditMajors(String id) async {
     var headers = {'Content-Type': 'application/json'};
-    var request =
-        http.Request('PUT', Uri.parse('https://backend-shool-project.onrender.com/admin/edit-major/$id'));
+    var request = http.Request('PUT', Uri.parse('https://backend-shool-project.onrender.com/admin/edit-major/$id'));
     request.body = json.encode({"name": editNameController.text, "description": editDescriptionController.text});
     request.headers.addAll(headers);
 
@@ -179,9 +178,7 @@ class _MajorsPagesState extends State<MajorsPages> {
                     icon: const Icon(Icons.edit, size: 16),
                   ),
                   onTap: () async {
-                    await Future.delayed(const Duration(seconds: 2), () {
-                      _showDeleteMajorsConfirmationDialog(context, majors, onDeleteMajors);
-                    });
+                    _showDeleteMajorsConfirmationDialog(context, majors, onDeleteMajors);
                   },
                 );
               },
@@ -212,21 +209,23 @@ class _MajorsPagesState extends State<MajorsPages> {
                   controller: nameController,
                   decoration: const InputDecoration(
                     hintText: 'Tên ngành học',
-                    hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                    hintStyle: TextStyle(color: Color(0xFFB6BBC3), fontSize: 14, fontWeight: FontWeight.w400),
                     errorStyle: TextStyle(color: Colors.red),
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w400),
                     border: OutlineInputBorder(),
-                    errorBorder: UnderlineInputBorder(
+                    prefix: SizedBox(width: 12),
+                    contentPadding: EdgeInsets.symmetric(vertical: 8),
+                    errorBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.red),
                     ),
-                    focusedErrorBorder: UnderlineInputBorder(
+                    focusedErrorBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.red),
                     ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFD2D5DA)),
                     ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFD2D5DA)),
                     ),
                   ),
                   validator: (value) {
@@ -242,21 +241,23 @@ class _MajorsPagesState extends State<MajorsPages> {
                   controller: descriptionController,
                   decoration: const InputDecoration(
                     hintText: 'Mô tả ngành học',
-                    hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                    hintStyle: TextStyle(color: Color(0xFFB6BBC3), fontSize: 14, fontWeight: FontWeight.w400),
                     errorStyle: TextStyle(color: Colors.red),
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w400),
                     border: OutlineInputBorder(),
-                    errorBorder: UnderlineInputBorder(
+                    prefix: SizedBox(width: 12),
+                    contentPadding: EdgeInsets.symmetric(vertical: 8),
+                    errorBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.red),
                     ),
-                    focusedErrorBorder: UnderlineInputBorder(
+                    focusedErrorBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.red),
                     ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFD2D5DA)),
                     ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFD2D5DA)),
                     ),
                   ),
                   validator: (value) {
@@ -272,7 +273,7 @@ class _MajorsPagesState extends State<MajorsPages> {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -347,21 +348,23 @@ class _MajorsPagesState extends State<MajorsPages> {
                   controller: editNameController,
                   decoration: InputDecoration(
                     hintText: majorsData.name,
-                    hintStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                    hintStyle: const TextStyle(color: Color(0xFFB6BBC3), fontSize: 14, fontWeight: FontWeight.w400),
                     errorStyle: const TextStyle(color: Colors.red),
-                    labelStyle: const TextStyle(color: Colors.black),
+                    labelStyle: const TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w400),
                     border: const OutlineInputBorder(),
-                    errorBorder: const UnderlineInputBorder(
+                    prefix: const SizedBox(width: 12),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                    errorBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.red),
                     ),
-                    focusedErrorBorder: const UnderlineInputBorder(
+                    focusedErrorBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.red),
                     ),
-                    enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFD2D5DA)),
                     ),
-                    focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFD2D5DA)),
                     ),
                   ),
                   validator: (value) {
@@ -377,21 +380,23 @@ class _MajorsPagesState extends State<MajorsPages> {
                   controller: editDescriptionController,
                   decoration: InputDecoration(
                     hintText: majorsData.description,
-                    hintStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                    hintStyle: const TextStyle(color: Color(0xFFB6BBC3), fontSize: 14, fontWeight: FontWeight.w400),
                     errorStyle: const TextStyle(color: Colors.red),
-                    labelStyle: const TextStyle(color: Colors.black),
+                    labelStyle: const TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w400),
                     border: const OutlineInputBorder(),
-                    errorBorder: const UnderlineInputBorder(
+                    prefix: const SizedBox(width: 12),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                    errorBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.red),
                     ),
-                    focusedErrorBorder: const UnderlineInputBorder(
+                    focusedErrorBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.red),
                     ),
-                    enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFD2D5DA)),
                     ),
-                    focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFD2D5DA)),
                     ),
                   ),
                   validator: (value) {
